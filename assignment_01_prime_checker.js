@@ -43,3 +43,55 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// -----------------------------------------------------------------------------
+// isPrime(n)
+// Returns true if n is a prime number, false otherwise.
+// A prime number is a whole number greater than 1 that has no divisors
+// other than 1 and itself.
+// -----------------------------------------------------------------------------
+function isPrime(n) {
+  // Numbers less than 2 are NOT prime.
+  if (n < 2) {
+    return false;
+  }
+
+  // 2 is the only even prime number.
+  if (n === 2) {
+    return true;
+  }
+
+  // Even numbers greater than 2 are NOT prime.
+  if (n % 2 === 0) {
+    return false;
+  }
+
+  // Check odd divisors up to the square root of n. If n has a factor larger
+  // than its square root, the corresponding co-factor would be smaller than
+  // the square root, so we only need to search up to sqrt(n).
+  for (let i = 3; i <= Math.sqrt(n); i += 2) {
+    if (n % i === 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+// main()
+// Reads an integer from the user, calls isPrime(), and prints the result.
+// -----------------------------------------------------------------------------
+function main() {
+  const number = readlineSync.questionInt('Enter a number: ');
+
+  if (isPrime(number)) {
+    console.log(`${number} is a prime number.`);
+  } else {
+    console.log(`${number} is NOT a prime number.`);
+  }
+}
+
+// Run the program.
+main();
