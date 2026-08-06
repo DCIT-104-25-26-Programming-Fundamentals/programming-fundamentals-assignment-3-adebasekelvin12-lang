@@ -44,3 +44,99 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// -----------------------------------------------------------------------------
+// calculateSum(numbers)
+// Returns the sum of all numbers in the array using a loop.
+// Does NOT use reduce() or other built-in array methods.
+// -----------------------------------------------------------------------------
+function calculateSum(numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+  }
+  return sum;
+}
+
+// -----------------------------------------------------------------------------
+// calculateAverage(numbers)
+// Returns the average (mean) of all numbers in the array using a loop.
+// Does NOT use reduce() or other built-in array methods.
+// -----------------------------------------------------------------------------
+function calculateAverage(numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+  }
+  return sum / numbers.length;
+}
+
+// -----------------------------------------------------------------------------
+// findMaximum(numbers)
+// Returns the largest number in the array using a loop.
+// Does NOT use Math.max().
+// -----------------------------------------------------------------------------
+function findMaximum(numbers) {
+  let max = numbers[0];
+  for (let i = 1; i < numbers.length; i++) {
+    if (numbers[i] > max) {
+      max = numbers[i];
+    }
+  }
+  return max;
+}
+
+// -----------------------------------------------------------------------------
+// findMinimum(numbers)
+// Returns the smallest number in the array using a loop.
+// Does NOT use Math.min().
+// -----------------------------------------------------------------------------
+function findMinimum(numbers) {
+  let min = numbers[0];
+  for (let i = 1; i < numbers.length; i++) {
+    if (numbers[i] < min) {
+      min = numbers[i];
+    }
+  }
+  return min;
+}
+
+// -----------------------------------------------------------------------------
+// main()
+// Reads N numbers from the user, validates N, then computes and prints
+// the sum, average, maximum, and minimum.
+// -----------------------------------------------------------------------------
+function main() {
+  const n = readlineSync.questionInt('How many numbers? ');
+
+  // N must be a positive integer.
+  if (n <= 0) {
+    console.log('Error: Please enter a positive integer.');
+    return;
+  }
+
+  // Collect the numbers from the user.
+  const numbers = [];
+  for (let i = 1; i <= n; i++) {
+    const num = readlineSync.questionInt(`Enter number ${i}: `);
+    numbers.push(num);
+  }
+
+  // Compute the statistics using the dedicated functions.
+  const sum = calculateSum(numbers);
+  const average = calculateAverage(numbers);
+  const maximum = findMaximum(numbers);
+  const minimum = findMinimum(numbers);
+
+  // Print the results.
+  console.log('');
+  console.log('Results:');
+  console.log(`Sum:     ${sum}`);
+  console.log(`Average: ${average}`);
+  console.log(`Maximum: ${maximum}`);
+  console.log(`Minimum: ${minimum}`);
+}
+
+// Run the program.
+main();
