@@ -75,3 +75,151 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// -----------------------------------------------------------------------------
+// add(a, b)
+// Returns the sum of a and b.
+// -----------------------------------------------------------------------------
+function add(a, b) {
+  return a + b;
+}
+
+// -----------------------------------------------------------------------------
+// subtract(a, b)
+// Returns a minus b.
+// -----------------------------------------------------------------------------
+function subtract(a, b) {
+  return a - b;
+}
+
+// -----------------------------------------------------------------------------
+// multiply(a, b)
+// Returns the product of a and b.
+// -----------------------------------------------------------------------------
+function multiply(a, b) {
+  return a * b;
+}
+
+// -----------------------------------------------------------------------------
+// divide(a, b)
+// Returns a divided by b. Throws an Error if b is 0 so the caller can
+// display a clean message instead of letting the program produce Infinity.
+// -----------------------------------------------------------------------------
+function divide(a, b) {
+  if (b === 0) {
+    throw new Error('Cannot divide by zero.');
+  }
+  return a / b;
+}
+
+// -----------------------------------------------------------------------------
+// modulus(a, b)
+// Returns the remainder of a divided by b.
+// -----------------------------------------------------------------------------
+function modulus(a, b) {
+  return a % b;
+}
+
+// -----------------------------------------------------------------------------
+// exponentiate(a, b)
+// Returns a raised to the power of b (a^b).
+// -----------------------------------------------------------------------------
+function exponentiate(a, b) {
+  return a ** b;
+}
+
+// -----------------------------------------------------------------------------
+// performOperation(choice)
+// Reads the two operands, dispatches to the correct operation function,
+// and prints the result formatted to 2 decimal places.
+// The operator parameter controls which symbol is shown in the output.
+// -----------------------------------------------------------------------------
+function performOperation(choice) {
+  const a = readlineSync.questionInt('Enter first number : ');
+  const b = readlineSync.questionInt('Enter second number: ');
+
+  let result;
+  let operator;
+
+  try {
+    switch (choice) {
+      case 1:
+        result = add(a, b);
+        operator = '+';
+        break;
+      case 2:
+        result = subtract(a, b);
+        operator = '-';
+        break;
+      case 3:
+        result = multiply(a, b);
+        operator = '*';
+        break;
+      case 4:
+        result = divide(a, b);
+        operator = '/';
+        break;
+      case 5:
+        result = modulus(a, b);
+        operator = '%';
+        break;
+      case 6:
+        result = exponentiate(a, b);
+        operator = '**';
+        break;
+      default:
+        return; // Should never happen, but be safe.
+    }
+
+    console.log(`Result: ${a} ${operator} ${b} = ${result.toFixed(2)}`);
+  } catch (error) {
+    // divide() throws when dividing by zero; handle it gracefully.
+    console.log(`Error: ${error.message}`);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// showMenu()
+// Prints the formatted calculator menu.
+// -----------------------------------------------------------------------------
+function showMenu() {
+  console.log('');
+  console.log('============================');
+  console.log('      SIMPLE CALCULATOR');
+  console.log('============================');
+  console.log('1. Addition');
+  console.log('2. Subtraction');
+  console.log('3. Multiplication');
+  console.log('4. Division');
+  console.log('5. Modulus');
+  console.log('6. Exponentiation');
+  console.log('7. Quit');
+}
+
+// -----------------------------------------------------------------------------
+// main()
+// Runs the main menu loop until the user selects Quit.
+// -----------------------------------------------------------------------------
+function main() {
+  console.log('Welcome to the Simple Calculator!');
+
+  let running = true;
+
+  while (running) {
+    showMenu();
+    const choice = readlineSync.questionInt('Select an operation (1-7): ');
+
+    if (choice >= 1 && choice <= 6) {
+      performOperation(choice);
+    } else if (choice === 7) {
+      running = false;
+      console.log('Goodbye!');
+    } else {
+      console.log('Invalid choice. Please select a number between 1 and 7.');
+    }
+  }
+}
+
+// Run the program.
+main();
