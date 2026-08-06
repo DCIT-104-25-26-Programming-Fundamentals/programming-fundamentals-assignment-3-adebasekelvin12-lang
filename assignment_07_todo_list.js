@@ -82,3 +82,121 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+// The array that holds all tasks.
+let tasks = [];
+
+// -----------------------------------------------------------------------------
+// addTask()
+// Prompts the user for a task description and adds it to the tasks array.
+// -----------------------------------------------------------------------------
+function addTask() {
+  const description = readlineSync.question('Enter task: ').trim();
+
+  if (description === '') {
+    console.log('Error: Task description cannot be empty.');
+    return;
+  }
+
+  tasks.push(description);
+  console.log(`Task added: "${description}"`);
+}
+
+// -----------------------------------------------------------------------------
+// viewTasks()
+// Displays all tasks numbered from 1.
+// Prints a friendly message if the list is empty.
+// Returns true if there is at least one task, false otherwise (so deleteTask
+// can reuse it to decide whether to ask for a task number).
+// -----------------------------------------------------------------------------
+function viewTasks() {
+  if (tasks.length === 0) {
+    console.log('Your to-do list is empty. Add a task first!');
+    return false;
+  }
+
+  console.log('Your Tasks:');
+  for (let i = 0; i < tasks.length; i++) {
+    console.log(`${i + 1}. ${tasks[i]}`);
+  }
+  return true;
+}
+
+// -----------------------------------------------------------------------------
+// deleteTask()
+// Shows the current tasks, asks the user for a task number, and removes it
+// using splice(). Validates the number and prints an error if invalid.
+// -----------------------------------------------------------------------------
+function deleteTask() {
+  // If there are no tasks, viewTasks() already printed a message.
+  if (!viewTasks()) {
+    return;
+  }
+
+  const taskNumber = readlineSync.questionInt('Enter task number to delete: ');
+
+  // Validate: number must be within the range of existing tasks.
+  if (taskNumber < 1 || taskNumber > tasks.length) {
+    console.log(
+      `Error: Invalid task number. Please enter a number between 1 and ${tasks.length}.`
+    );
+    return;
+  }
+
+  // Convert the 1-based task number to a 0-based array index.
+  const index = taskNumber - 1;
+  const removed = tasks.splice(index, 1)[0];
+  console.log(`Task "${removed}" has been removed.`);
+}
+
+// -----------------------------------------------------------------------------
+// showMenu()
+// Prints the formatted to-do list menu.
+// -----------------------------------------------------------------------------
+function showMenu() {
+  console.log('');
+  console.log('============================');
+  console.log('      TO-DO LIST MENU');
+  console.log('============================');
+  console.log('1. Add task');
+  console.log('2. View tasks');
+  console.log('3. Delete task');
+  console.log('4. Quit');
+}
+
+// -----------------------------------------------------------------------------
+// main()
+// Runs the main menu loop until the user chooses to quit.
+// -----------------------------------------------------------------------------
+function main() {
+  console.log('Welcome to your To-Do List!');
+
+  let running = true;
+
+  while (running) {
+    showMenu();
+    const choice = readlineSync.questionInt('Enter your choice (1-4): ');
+
+    switch (choice) {
+      case 1:
+        addTask();
+        break;
+      case 2:
+        viewTasks();
+        break;
+      case 3:
+        deleteTask();
+        break;
+      case 4:
+        running = false;
+        console.log('Goodbye!');
+        break;
+      default:
+        console.log('Invalid choice. Please enter a number between 1 and 4.');
+    }
+  }
+}
+
+// Run the program.
+main();
